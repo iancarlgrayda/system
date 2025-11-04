@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>S&D CRE8TIVE | Home</title>
+  <link rel="stylesheet" href="design.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+  <!-- NAVIGATION BAR -->
+  <header class="navbar">
+    <div class="logo">S&D CRE8TIVE</div>
+    <nav id="navMenu">
+      <ul class="nav-links">
+        <li><a href="#home" class="active">Home</a></li>
+        <li><a href="#blogs">Blogs</a></li>
+        <li><a href="#offers">View Offers</a></li>
+        <li><a href="#about">About Us</a></li>
+        <li><a href="login.html" class="login-btn">Login</a></li>
+        <li><a href="signup.html" class="signup-btn">Sign Up</a></li>
+      </ul>
+    </nav>
+    <div class="menu-toggle" id="menuToggle">☰</div>
+  </header>
+
+  <!-- HERO SECTION -->
+  <section id="home" class="hero">
+  <div class="hero-content">
+    <h1>Empowering Minds, Building the Future</h1>
+    <p>Welcome to S&D CRE8TIVE — where innovation meets opportunity.</p>
+    <button class="inquire-btn" id="openForm">Inquire Now</button>
+  </div>
+
+  <!-- INQUIRY FORM POPUP -->
+  <div class="inquiry-overlay" id="inquiryOverlay">
+    <div class="inquiry-form">
+      <span class="close-btn" id="closeForm">&times;</span>
+      <h2>Inquire Now</h2>
+      <form id="inquiryForm">
+        <div class="form-group">
+          <label for="name">Full Name</label>
+          <input type="text" name="name" id="name" required />
+        </div>
+        <div class="form-group">
+          <label for="email">Email Address</label>
+          <input type="email" name="email" id="email" required />
+        </div>
+        <div class="form-group">
+          <label for="service">Service Interested In</label>
+          <select name="service" id="service" required>
+            <option value="" disabled selected>Select a service</option>
+            <option value="Corporate Events">Corporate Events</option>
+            <option value="Weddings">Weddings</option>
+            <option value="Parties">Parties</option>
+            <option value="Design & Branding">Design & Branding</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="message">Message</label>
+          <textarea name="message" id="message" rows="4" placeholder="Your message here..." required></textarea>
+        </div>
+        <button type="submit" class="submit-btn">Send Inquiry</button>
+        <p id="responseMsg" style="margin-top:10px;font-weight:bold;"></p>
+      </form>
+    </div>
+  </div>
+</section>
+
+
+  <!-- BLOGS -->
+  <section id="blogs" class="blogs">
+    <h2>Latest Blogs</h2>
+    <div class="blog-container">
+      <div class="blog-card"><img src="images/blog1.jpg"><h3>5 Tips for Successful Event Planning</h3></div>
+      <div class="blog-card"><img src="images/blog2.jpg"><h3>Design Trends 2025</h3></div>
+      <div class="blog-card"><img src="images/blog3.jpg"><h3>Boost Your Business Brand</h3></div>
+    </div>
+  </section>
+
+  <!-- OFFERS -->
+  <section id="offers" class="offers">
+    <h2>Our Offers</h2>
+    <div class="offer-container">
+      <div class="offer-box"><img src="images/offer1.jpg"><h3>💼 Corporate Package</h3></div>
+      <div class="offer-box"><img src="images/offer2.jpg"><h3>🎉 Party Package</h3></div>
+      <div class="offer-box"><img src="images/WEDDING.jpg"><h3>💍 Wedding Package</h3></div>
+    </div>
+  </section>
+
+  <!-- ABOUT US -->
+  <section id="about" class="about">
+    <h2>About Us</h2>
+    <p>S&D CRE8TIVE is a professional event and design agency dedicated to creating meaningful experiences.</p>
+    <div class="social-icons">
+      <a href="#"><i class="fab fa-facebook"></i></a>
+      <a href="#"><i class="fab fa-instagram"></i></a>
+      <a href="#"><i class="fab fa-telegram"></i></a>
+    </div>
+  </section>
+
+  <footer><p>© 2025 S&D CRE8TIVE. All rights reserved.</p></footer>
+
+  <!-- CHATBOT -->
+  <div class="chatbot-container" id="chatbot">
+    <div class="chatbot-header">🤖 Jeff - AI Support</div>
+    <div class="chatbot-body" id="chatBody">
+      <div class="bot-msg intro">👋 Hi there! I’m <b>Jeff</b> — your virtual assistant. How can I help you today?</div>
+    </div>
+    <div class="chatbot-input">
+      <input type="text" id="chatInput" placeholder="Type your message..." />
+      <button id="sendBtn"><i class="fas fa-paper-plane"></i></button>
+    </div>
+  </div>
+  <div class="chatbot-toggle" id="chatToggle"><i class="fas fa-comments"></i></div>
+
+  <!-- JAVASCRIPT -->
+  <script>
+    // Navbar menu toggle
+    const menuToggle = document.getElementById("menuToggle");
+    const navLinks = document.querySelector(".nav-links");
+    menuToggle.addEventListener("click", () => {
+      navLinks.classList.toggle("show");
+    });
+
+    // Inquiry form popup
+    const openForm = document.getElementById("openForm");
+    const closeForm = document.getElementById("closeForm");
+    const inquiryOverlay = document.getElementById("inquiryOverlay");
+
+    openForm.addEventListener("click", () => inquiryOverlay.classList.add("show"));
+    closeForm.addEventListener("click", () => inquiryOverlay.classList.remove("show"));
+    window.addEventListener("click", e => {
+      if (e.target === inquiryOverlay) inquiryOverlay.classList.remove("show");
+    });
+
+    // Submit Inquiry via AJAX (no reload)
+    document.getElementById("inquiryForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const formData = new FormData(e.target);
+      const res = await fetch("inquiries.php", { method: "POST", body: formData });
+      const msg = await res.text();
+      document.getElementById("responseMsg").innerText = msg;
+      e.target.reset();
+    });
+
+    // Chatbot
+    const chatToggle = document.getElementById("chatToggle");
+    const chatbot = document.getElementById("chatbot");
+    const chatBody = document.getElementById("chatBody");
+    const chatInput = document.getElementById("chatInput");
+    const sendBtn = document.getElementById("sendBtn");
+
+    chatToggle.addEventListener("click", () => chatbot.classList.toggle("show"));
+
+    function botMessage(msg) {
+      const div = document.createElement("div");
+      div.classList.add("bot-msg");
+      div.innerHTML = msg;
+      chatBody.appendChild(div);
+      chatBody.scrollTop = chatBody.scrollHeight;
+    }
+
+    function userMessage(msg) {
+      const div = document.createElement("div");
+      div.classList.add("user-msg");
+      div.textContent = msg;
+      chatBody.appendChild(div);
+      chatBody.scrollTop = chatBody.scrollHeight;
+    }
+
+    sendBtn.addEventListener("click", sendMessage);
+    chatInput.addEventListener("keypress", e => { if (e.key === "Enter") sendMessage(); });
+
+    function sendMessage() {
+      const text = chatInput.value.trim();
+      if (!text) return;
+      userMessage(text);
+      chatInput.value = "";
+      setTimeout(() => botReply(text.toLowerCase()), 600);
+    }
+
+    function botReply(text) {
+      if (text.includes("hi") || text.includes("hello")) {
+        botMessage("👋 Hello! I’m <b>Jeff</b> from <b>S&D CRE8TIVE</b>. What would you like to do?");
+        setTimeout(() => {
+          botMessage(`
+            <div class="chat-options">
+              <button onclick="botMessage('📞 Call us at <b>0998-433-8256</b>')">📞 Contact</button>
+              <button onclick="botMessage('💬 Message us on <b>Facebook: S&D CRE8TIVE</b>')">💬 Facebook</button>
+              <button onclick="botMessage('📸 Follow <b>@sd_cre8tive</b> on Instagram!')">📸 Instagram</button>
+              <button onclick="botMessage('📝 You can also fill out our <b>Inquire Now</b> form on the homepage!')">📝 Inquire</button>
+            </div>
+          `);
+        }, 1000);
+      } else {
+        botMessage("I'm Jeff — your assistant! Type <b>hi</b> to get started 😊");
+      }
+    }
+    
+  </script>
+</body>
+</html>
+

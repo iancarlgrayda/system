@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Sign Up | S&D Cre8tive Events</title>
+  <link rel="stylesheet" href="signup1.css">
+</head>
+<body>  
+  <div class="container">
+    <!-- 🖼 Left Side -->
+    <div class="left-panel"></div>
+
+    <!-- ✍️ Right Side -->
+    <div class="right-panel">
+      <div class="login-container">
+        <h1 id="welcomeText" class="fade-text">Welcome!</h1>
+
+        <div class="tab-buttons">
+          <button id="clientTab" class="active">Client Signup</button>
+          <button id="staffTab">Staff Signup</button>
+        </div>
+
+        <!-- 🔹 CLIENT SIGNUP FORM -->
+        <div id="clientFormContainer" class="form-container active">
+          <p class="subtitle">Fill out the form to create your <b>Client</b> account</p>
+          <form id="clientForm" method="POST" action="signup.php">
+            <input type="hidden" name="role" value="client">
+
+            <label>Full Name:</label>
+            <input type="text" name="fullname" placeholder="Enter your full name" required>
+
+            <label>Email:</label>
+            <input type="email" name="email" placeholder="Enter your email" required>
+
+            <label>Contact Number:</label>
+            <input type="tel" name="phone" placeholder="Enter your contact number" required>
+
+            <label>Username:</label>
+            <input type="text" name="username" placeholder="Enter username" required>
+
+            <label>Password:</label>
+            <input type="password" name="password" placeholder="Enter password" required>
+
+            <label>Confirm Password:</label>
+            <input type="password" name="confirm" placeholder="Confirm password" required>
+
+            <input type="submit" value="Register Client" class="submit-btn">
+          </form>
+          <p id="clientMsg" class="error-msg"></p>
+        </div>
+
+        <!-- 🔹 STAFF SIGNUP FORM -->
+        <div id="staffFormContainer" class="form-container">
+          <p class="subtitle">Fill out the form to create your <b>Staff</b> account</p>
+          <form id="staffForm" method="POST" action="signup.php">
+            <input type="hidden" name="role" value="staff">
+            
+            <label>Username:</label>
+            <input type="text" name="username" placeholder="Enter username" required>
+
+            <label>Password:</label>
+            <input type="password" name="password" placeholder="Enter password" required>
+
+            <input type="submit" value="Register Staff" class="submit-btn">
+          </form>
+          <p id="staffMsg" class="error-msg"></p>
+        </div>
+
+        <div class="bottom-text">
+          <p>Already have an account? <a href="login.html">Login</a></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 🌟 JS -->
+  <script>
+    // 🌍 Welcome text animation
+    const welcomeText = document.getElementById("welcomeText");
+    const greetings = ["Welcome!","Bienvenido!","Bienvenue!","Willkommen!","Benvenuto!","ようこそ!","欢迎!","Selamat Datang!","Mabuhay!","स्वागत है!","Добро пожаловать!","مرحبا!"];
+    let index = 0;
+    setInterval(() => {
+      index = (index + 1) % greetings.length;
+      welcomeText.textContent = greetings[index];
+    }, 3000);
+
+    // 🔹 Tab switching
+    const clientTab = document.getElementById("clientTab");
+    const staffTab = document.getElementById("staffTab");
+    const clientFormContainer = document.getElementById("clientFormContainer");
+    const staffFormContainer = document.getElementById("staffFormContainer");
+
+    clientTab.addEventListener("click", () => {
+      clientTab.classList.add("active");
+      staffTab.classList.remove("active");
+      clientFormContainer.classList.add("active");
+      staffFormContainer.classList.remove("active");
+    });
+
+    staffTab.addEventListener("click", () => {
+      staffTab.classList.add("active");
+      clientTab.classList.remove("active");
+      staffFormContainer.classList.add("active");
+      clientFormContainer.classList.remove("active");
+    });
+
+    // ✅ Client validation
+    const clientForm = document.getElementById("clientForm");
+    const clientMsg = document.getElementById("clientMsg");
+    clientForm.addEventListener("submit", (e) => {
+      const form = e.target;
+      const pass = form.password.value;
+      const confirm = form.confirm.value;
+
+      if (pass !== confirm) {
+        e.preventDefault();
+        clientMsg.textContent = "Passwords do not match!";
+        clientMsg.style.display = "block";
+      } else {
+        clientMsg.style.display = "none";
+      }
+    });
+
+    // ✅ Staff validation
+    const staffForm = document.getElementById("staffForm");
+    const staffMsg = document.getElementById("staffMsg");
+    staffForm.addEventListener("submit", (e) => {
+      const form = e.target;
+      const username = form.username.value.trim();
+      const password = form.password.value.trim();
+
+      if (username.length < 6) {
+        e.preventDefault();
+        staffMsg.textContent = "Username must be at least 6 characters long.";
+        staffMsg.style.display = "block";
+        return;
+      }
+      if (password.length < 5) {
+        e.preventDefault();
+        staffMsg.textContent = "Password must be at least 5 characters long.";
+        staffMsg.style.display = "block";
+        return;
+      }
+      staffMsg.style.display = "none";
+    });
+
+    // ✨ Parallax animation
+    document.addEventListener("mousemove", e => {
+      const moveX = (e.clientX - window.innerWidth / 2) * 0.01;
+      const moveY = (e.clientY - window.innerHeight / 2) * 0.01;
+      document.querySelector(".left-panel").style.transform = `translate(${moveX}px, ${moveY}px) scale(1.05)`;
+    });
+  </script>
+</body>
+</html>
